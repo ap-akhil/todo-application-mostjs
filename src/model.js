@@ -21,6 +21,13 @@ export const removeTodo = (id) => (app) => ({
   todos: app.todos.filter((todo) => todo.id !== id),
 });
 
+export const updateTodo = (description, id) => (app) => ({
+  ...app,
+  todos: app.todos.map((todo) =>
+    todo.id === id ? { ...todo, description } : todo
+  ),
+});
+
 export const updateCompleted = (completed, id) => (app) => ({
   ...app,
   todos: app.todos.map((todo) =>

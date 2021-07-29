@@ -7,7 +7,9 @@ import {
   handleComplete,
   handleRemove,
   handleRemoveAllCompleted,
+  handleUpdate,
 } from "./action";
+import "./App.css";
 
 const maybeClass = (className) => (condition) => condition ? className : "";
 const ifCompleted = maybeClass("completed");
@@ -27,14 +29,21 @@ const filterTodos = ({ filter, todos }) =>
     }
   });
 
+const editClick = (id, desc) => {
+  let newInput = document.getElementById("new-todo");
+  let updateInput = document.getElementById("update-todo");
+  newInput.style.display = "none";
+  updateInput.style.display = "block";
+  updateInput.value = desc;
+  updateInput.setAttribute("data-todoid", id);
+};
+
 export const View = (addAction) => (appState) => {
   const completed = completedCount(appState);
   const todos = appState.todos;
   const filtered = filterTodos(appState);
   const remaining = todos.length - completed;
   localStorage.setItem("appState", JSON.stringify(appState));
-  console.log(appState);
-  //console.log(completed, todos, filtered, remaining);
 
   return (
     <div>
@@ -43,10 +52,21 @@ export const View = (addAction) => (appState) => {
         <input
           className="new-todo"
           name="new-todo"
+          id="new-todo"
           placeholder="What needs to be done?"
           autoComplete="off"
           autoFocus
           onKeyPress={compose(addAction, handleAdd)}
+        />
+        <input
+          className="update-todo hide-input"
+          name="update-todo"
+          id="update-todo"
+          placeholder="What needs to be updated?"
+          autoComplete="off"
+          data-todoid="1"
+          autoFocus
+          onKeyPress={compose(addAction, handleUpdate)}
         />
       </header>
       <TodoList
@@ -95,7 +115,11 @@ export const TodoItem = ({ addAction, todo }) => {
           checked={todo.completed}
           onChange={compose(addAction, handleComplete(todo))}
         />
-        <label>{todo.description}</label>
+
+        <label onDoubleClick={() => editClick(todo.id, todo.description)}>
+          {todo.description}
+        </label>
+
         <button
           className="destroy"
           onClick={compose(addAction, handleRemove(todo))}
