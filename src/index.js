@@ -21,11 +21,12 @@ const appNode = qs(".todoapp", document);
 
 //Initial app state when application loads
 // emptyApp = { todos: [], focus: null, filter: "/", nextId: 1 }
-const appState =
-  {
-    ...JSON.parse(localStorage.getItem("appState")),
-    nextId: JSON.parse(localStorage.getItem("appState")).todos.length + 1,
-  } || emptyApp;
+const appState = localStorage.getItem("appState")
+  ? {
+      ...JSON.parse(localStorage.getItem("appState")),
+      nextId: JSON.parse(localStorage.getItem("appState")).todos.length + 1,
+    }
+  : emptyApp;
 
 //scheduler to create a new timeline for our stream
 const scheduler = newDefaultScheduler();
