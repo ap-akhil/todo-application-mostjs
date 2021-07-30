@@ -21,10 +21,10 @@ const appNode = qs(".todoapp", document);
 
 //Initial app state when application loads
 // emptyApp = { todos: [], focus: null, filter: "/", nextId: 1 }
+// todo = {id:1, description:"task1" , completed: false}
 const appState = localStorage.getItem("appState")
   ? {
       ...JSON.parse(localStorage.getItem("appState")),
-      nextId: JSON.parse(localStorage.getItem("appState")).todos.length + 1,
     }
   : emptyApp;
 
@@ -58,6 +58,7 @@ const stateUpdates = skipRepeats(
 );
 
 //Each time an event occurs in stateUpdates stream, it will re-render ReactDOM.
+//map((event) => View(addAction)(event), stateUpdates) : Stream<JSXElement>
 const viewUpdates = tap(
   (element) => ReactDOM.render(element, appNode),
   map((event) => View(addAction)(event), stateUpdates)

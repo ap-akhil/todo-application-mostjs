@@ -29,7 +29,7 @@ const filterTodos = ({ filter, todos }) =>
     }
   });
 
-const editClick = (id, desc) => {
+const editItem = (id, desc) => {
   let newInput = document.getElementById("new-todo");
   let updateInput = document.getElementById("update-todo");
   newInput.style.display = "none";
@@ -116,7 +116,7 @@ export const TodoItem = ({ addAction, todo }) => {
           onChange={compose(addAction, handleComplete(todo))}
         />
 
-        <label onDoubleClick={() => editClick(todo.id, todo.description)}>
+        <label onDoubleClick={() => editItem(todo.id, todo.description)}>
           {todo.description}
         </label>
 
